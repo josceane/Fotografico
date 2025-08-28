@@ -42,60 +42,30 @@ function compressImage(imgSrc, maxWidth = 900, quality = 0.72) {
 }
 
 async function addHeaderAndWatermark(doc) {
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
+  try {
+    const header = await (await fetch('assets/cabecalho.png')).blob();
+    const headReader = new FileReader();
+    const headData = await new Promise(res => { headReader.onload = () => res(headReader.result); headReader.readAsDataURL(header); });
 
-  // Carregar fundo (marca d'água)
-  const fundoBlob = await (await fetch('assets/fundo.png')).blob();
-  const fundoData = await blobToDataURL(fundoBlob);
+    const fundo = await (await fetch('assets/fundo.png')).blob();
+    const fundoReader = new FileReader();
+    const fundoData = await new Promise(res => { fundoReader.onload = () => res(fundoReader.result); fundoReader.readAsDataURL(fundo); });
 
-  // Clarear imagem em um canvas
-  const fundoClaro = await lightenImage(fundoData, 0.15); // 0.15 = bem clara
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-  // Carregar cabeçalho
-  const cabecalhoBlob = await (await fetch('assets/cabecalho.png')).blob();
-  const cabecalhoData = await blobToDataURL(cabecalhoBlob);
+    // Marca d'água clara (com transparência)
+    doc.setGState(new doc.GState({ opacity: 0.12 })); 
+    doc.addImage(fundoData, 'PNG', pageWidth*0.05, pageHeight*0.10, pageWidth*0.90, pageHeight*0.80);
+    doc.setGState(new doc.GState({ opacity: 1 })); 
 
-  // Inserir marca d’água no centro
-  doc.addImage(fundoClaro, 'PNG',
-               pageWidth*0.05, pageHeight*0.10,
-               pageWidth*0.90, pageHeight*0.80);
-
-  // Inserir cabeçalho no topo
-  doc.addImage(cabecalhoData, 'PNG',
-               10, 4, pageWidth-20, 22);
-
-  // Linha divisória
-  doc.setDrawColor(200);
-  doc.line(10, 28, pageWidth-10, 28);
-}
-
-// Converte Blob em DataURL
-function blobToDataURL(blob) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
-}
-
-// Clareia imagem usando canvas
-function lightenImage(dataUrl, opacity = 0.2) {
-  return new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-
-      ctx.globalAlpha = opacity; // aplica transparência
-      ctx.drawImage(img, 0, 0);
-
-      resolve(canvas.toDataURL('image/png'));
-    };
-    img.src = dataUrl;
-  });
+    // Cabeçalho no topo
+    doc.addImage(headData, 'PNG', 10, 4, pageWidth-20, 22);
+    doc.setDrawColor(200);
+    doc.line(10, 28, pageWidth-10, 28);
+  } catch(e) {
+    console.warn('Falha ao carregar cabeçalho/marca d\'água para o PDF:', e);
+  }
 }
 
 btnPDF.addEventListener('click', gerarPDF);
