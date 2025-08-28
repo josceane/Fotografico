@@ -1,0 +1,90 @@
+/* Básico */
+:root { --brand:#0b5be0; --paper:#ffffff; --ink:#1f2937; }
+* { box-sizing: border-box; }
+html, body { height:100%; }
+body {
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: #f5f7fb;
+}
+
+/* Cabeçalho fixo */
+.cabecalho {
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:10px 8px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.cabecalho img { max-width:100%; height:auto; }
+
+.container {
+  max-width: 980px;
+  margin: 20px auto;
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.06);
+  padding: 22px;
+  position: relative;
+}
+
+/* Marca d'água como fundo da página */
+.page {
+  background-image: url('assets/fundo.png');
+  background-repeat: no-repeat;
+  background-position: center 120px;
+  background-size: 70%;
+}
+
+h1 {
+  text-align:center;
+  letter-spacing:.6px;
+  margin: 0 0 16px 0;
+}
+h2 {
+  margin-top: 16px;
+}
+
+/* Form */
+.grid {
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:16px;
+}
+.field label { font-weight:700; display:block; margin-bottom:6px; }
+.field input, .field textarea {
+  width:100%; padding:10px 12px; border:1px solid #d1d5db; border-radius:10px;
+  background:#fff; outline:none;
+}
+.field textarea { resize:vertical; }
+
+.upload-line { display:flex; align-items:center; gap:12px; }
+.upload-line small { opacity:.8; }
+
+.foto-container {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:14px; margin-top:12px;
+}
+.foto-item {
+  background:#fafafa; border:1px solid #e5e7eb; border-radius:12px; padding:10px;
+}
+.foto-item img { width:100%; height:auto; display:block; border-radius:8px; }
+.legenda { width:100%; margin-top:6px; padding:8px 10px; border:1px solid #d1d5db; border-radius:8px; }
+
+.actions { display:flex; gap:10px; margin-top:18px; }
+button {
+  cursor:pointer; border:none; border-radius:10px; padding:12px 18px; font-size:16px;
+  background: var(--brand); color:#fff; font-weight:700;
+  box-shadow: 0 4px 10px rgba(11,91,224,.18);
+}
+button.secondary { background:#e5e7eb; color:#111827; box-shadow:none; }
+
+.rodape {
+  text-align:center; color:#6b7280; padding:20px 10px;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório Fotográfico • Postura Marabá</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icon-192.png">
+  <meta name="theme-color" content="#0b5be0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="cabecalho">
+    <img src="assets/cabecalho.png" alt="Cabeçalho Prefeitura de Marabá">
+  </header>
+
+  <main class="container page">
+    <h1>RELATÓRIO DE FISCALIZAÇÃO</h1>
+
+    <form id="relatorioForm">
+      <div class="grid">
+        <div class="field">
+          <label for="local">Local</label>
+          <input type="text" id="local" placeholder="Ex.: Folha 26 Quadra 07 Lote 07 – Nova Marabá">
+        </div>
+        <div class="field">
+          <label for="numero">Relatório nº</label>
+          <input type="text" id="numero" placeholder="DMFP0000/2025">
+        </div>
+        <div class="field">
+          <label for="data">Data</label>
+          <input type="date" id="data">
+        </div>
+        <div class="field">
+          <label for="fiscais">Órgãos envolvidos</label>
+          <input type="text" id="fiscais" placeholder="Postura, Guarda Municipal, ...">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="solicitante">Solicitante</label>
+        <input type="text" id="solicitante" placeholder="Nome do solicitante">
+      </div>
+
+      <div class="field">
+        <label for="referencia">Referência / Assunto</label>
+        <textarea id="referencia" rows="4" placeholder="Descreva brevemente o assunto. Quebra de linha é respeitada."></textarea>
+      </div>
+
+      <h2>RELATÓRIO FOTOGRÁFICO</h2>
+      <div class="upload-line">
+        <input type="file" id="fotos" multiple accept="image/*">
+        <small>Máximo de 18 fotos • As legendas ficam abaixo das imagens.</small>
+      </div>
+
+      <div class="foto-container" id="preview"></div>
+
+      <div class="actions">
+        <button type="button" id="btnPDF">Gerar PDF</button>
+        <button type="reset" class="secondary">Limpar</button>
+      </div>
+    </form>
+  </main>
+
+  <footer class="rodape">
+    postura@maraba.pa.gov.br • (94) 99155-2425
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
